@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Média de Pesos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4361ee">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Média</h1>
+
+        <!-- Abas -->
+        <div class="tabs">
+            <button id="abaAdicionados" class="tab-button active">Itens Adicionados</button>
+            <button id="abaSalvos" class="tab-button">Itens Salvos</button>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <div id="conteudoAdicionados" class="tab-content active">
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="peso">Peso (kg):</label>
+                    <input type="number" id="peso" placeholder="Ex: 50.5" step="0.01" min="0" class="input-peso">
+                </div>
+
+                <div class="input-field">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" placeholder="Ex: 3" min="1" value="1">
+                </div>
+
+                <button id="adicionar" class="btn-primary">Adicionar</button>
+            </div>
+
+            <div class="lista-container">
+                <h3>Itens Adicionados:</h3>
+                <ul id="lista-itens"></ul>
+            </div>
+
+            <div class="resultado">
+                <div class="resultado-buttons">
+                    <button id="calcular" class="btn-accent">Calcular Média</button>
+                    <button id="limpar" class="btn-secondary">Limpar Tudo</button>
+                </div>
+                <div id="resultado"></div>
+                <button id="salvar" class="btn-primary">Salvar Itens</button>
+            </div>
+        </div>
+
+        <div id="conteudoSalvos" class="tab-content">
+            <h3>Itens Salvos:</h3>
+            <ul id="lista-itens-salvos"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(() => console.log("Service Worker registrado!"))
+      .catch(err => console.log("Erro ao registrar SW:", err));
+  }
+</script>
+
+</body>
+</html>
