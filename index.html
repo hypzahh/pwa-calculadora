@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Média de Pesos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Calculadora de Média</h1>
+      <div class="tabs">
+  <button class="tab-btn active" id="tab-adicionados" title="Calculadora">
+  <!-- Ícone da calculadora -->
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+      <path d="M3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12C22 7.28595 22 4.92893 20.5355 3.46447C19.0711 2 16.714 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355Z" stroke="#1C274D" stroke-width="1.5"></path>
+      <path d="M18 8.49998H14M18 14.5H14M18 17.5H14M10 8.49999H8M8 8.49999L6 8.49999M8 8.49999L8 6.49998M8 8.49999L8 10.5M9.5 14.5L8.00001 16M8.00001 16L6.50001 17.5M8.00001 16L6.5 14.5M8.00001 16L9.49999 17.5" stroke="#FF5733" stroke-width="1.5" stroke-linecap="round"></path>
+    </g>
+  </svg>
+</button>
+
+  <button class="tab-btn" id="tab-salvos" title="Lista">
+  <!-- Ícone da lista -->
+  <svg version="1.1" id="svg2" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 1200 1200" fill="#000000" width="24" height="24">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+      <path id="path13600" inkscape:connector-curvature="0" d="M600,0c-65.168,0-115.356,54.372-115.356,119.385 c0,62.619-0.439,117.407-0.439,117.407H368.335c-2.181,0-4.291,0.241-6.372,0.586h-32.227v37.939v74.634h540.527v-74.634v-37.939 h-32.227c-2.081-0.345-4.191-0.586-6.372-0.586H715.796c0,0,1.318-49.596,1.318-117.041C717.114,57.131,665.168,0,600,0z M175.195,114.185V1200h849.609V114.185H755.64v78.662h191.382v928.345h-693.97V192.847H444.36v-78.662H175.195L175.195,114.185z M600,115.649c21.35,0,38.599,17.18,38.599,38.452c0,21.311-17.249,38.525-38.599,38.525s-38.599-17.215-38.599-38.525 C561.401,132.83,578.65,115.649,600,115.649L600,115.649z M329.736,426.27v38.525h38.599V426.27H329.736z M445.605,427.002v38.525 h424.658v-38.525H445.605z M329.736,571.582v38.525h38.599v-38.525H329.736z M445.605,572.314v38.599h424.658v-38.599H445.605z M329.736,716.895v38.525h38.599v-38.525H329.736z M445.605,717.7v38.525h424.658V717.7H445.605z M329.736,862.28v38.525h38.599 V862.28H329.736z M445.605,863.086v38.525h424.658v-38.525H445.605z M329.736,1007.593v38.525h38.599v-38.525H329.736z M445.605,1008.398v38.525h424.658v-38.525H445.605z"></path>
+    </g>
+  </svg>
+</button>
+</div>
+    </header>
+
+    <main>
+      <section class="tab-content" id="adicionados">
+        <div class="input-group">
+          <label for="aviario">Aviário:</label>
+          <input type="text" id="aviario" placeholder="Ex: Aviário 1">
+
+          <label for="peso">Peso (kg):</label>
+          <input type="number" id="peso" placeholder="Ex: 50.5" step="0.01" min="0">
+
+          <label for="quantidade">Quantidade:</label>
+          <input type="number" id="quantidade" placeholder="Ex: 3" min="1" value="1">
+
+          <button id="adicionar" class="btn-primary">Adicionar</button>
+        </div>
+
+        <div class="lista-container">
+          <h3>Itens Adicionados:</h3>
+          <ul id="lista-itens"></ul>
+        </div>
+
+        <div class="resultado">
+          <div class="resultado-buttons">
+            <button id="calcular" class="btn-accent">Calcular Média</button>
+            <button id="limpar" class="btn-secondary">Limpar Tudo</button>
+            <button id="salvar" class="btn-success">Salvar</button>
+          </div>
+          <div id="resultado"></div>
+        </div>
+      </section>
+
+      <section class="tab-content" id="salvos" style="display: none;">
+        <h3>Itens Salvos:</h3>
+        <ul id="itens-salvos"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('Service Worker registrado:', reg))
+          .catch(err => console.error('Erro ao registrar o Service Worker:', err));
+      });
+    }
+  </script>
+</body>
+</html>
