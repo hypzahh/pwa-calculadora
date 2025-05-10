@@ -14,23 +14,29 @@ document.addEventListener('DOMContentLoaded', function () {
     const abaSalvos = document.getElementById('salvos');
 
     let itens = JSON.parse(localStorage.getItem('itens')) || []; // Recupera os itens armazenados no localStorage
-    let savedItems = JSON.parse(localStorage.getItem('savedItems')) || [];
+    let savedItems = JSON.parse(localStorage.getItem('savedItems')) || {};
 
     // Função para atualizar a lista de itens adicionados
     function atualizarLista() {
-        listaItens.innerHTML = '';
+        listaItens.innerHTML = ''; // Limpa a lista
+
         itens.forEach(function (item, index) {
             const li = document.createElement('li');
             const span = document.createElement('span');
-            span.textContent = item.peso + ' kg × ' + item.quantidade;
+
+            // Exibe o peso e a quantidade
+            span.innerHTML = `
+                <strong>Peso:</strong> ${item.peso.toFixed(2)} kg<br>
+                <strong>Quantidade:</strong> ${item.quantidade}
+            `;
 
             const removerBtn = document.createElement('button');
             removerBtn.textContent = '×';
             removerBtn.className = 'remover-item';
             removerBtn.addEventListener('click', function () {
                 itens.splice(index, 1);
-                localStorage.setItem('itens', JSON.stringify(itens)); // Atualiza o localStorage ao remover um item
-                atualizarLista();
+                localStorage.setItem('itens', JSON.stringify(itens));
+                atualizarLista();  // Atualiza a lista
             });
 
             li.appendChild(span);
@@ -41,24 +47,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Função para atualizar a lista de itens salvos
     function atualizarItensSalvos() {
-        itensSalvos.innerHTML = '';
-        savedItems.forEach(function (item, index) {
-            const li = document.createElement('li');
-            const span = document.createElement('span');
-            span.textContent = `Peso Total: ${item.totalPeso}kg, Itens: ${item.totalItens}, Média: ${item.media}`;
+        itensSalvos.innerHTML = '';  // Limpa a lista
 
-            const removerBtn = document.createElement('button');
-            removerBtn.textContent = '×';
-            removerBtn.className = 'remover-item';
-            removerBtn.addEventListener('click', function () {
-                savedItems.splice(index, 1);
-                localStorage.setItem('savedItems', JSON.stringify(savedItems)); // Atualiza o localStorage ao remover um item salvo
-                atualizarItensSalvos();
+        // Iterar pelas datas no objeto savedItems
+        Object.keys(savedItems).forEach(function (data) {
+            // Exibe o título da data
+            const dataTitulo = document.createElement('h3');
+            dataTitulo.textContent = `Itens de ${data}`;
+            itensSalvos.appendChild(dataTitulo);
+
+            // Exibe os itens dessa data
+            savedItems[data].forEach(function (item, index) {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+
+                // Exibe o aviário, total de peso, total de quantidade e a média
+                span.innerHTML = `
+                    <strong>Aviário:</strong> ${item.aviario}<br>
+                    <strong>Total Peso:</strong> ${item.totalPeso.toFixed(2)} kg<br>
+                    <strong>Total Quantidade:</strong> ${item.totalQuantidade}<br>
+                    <strong>Média:</strong> ${item.media.toFixed(2)} kg
+                `;
+
+                const removerBtn = document.createElement('button');
+                removerBtn.textContent = '×';
+                removerBtn.className = 'remover-item';
+                removerBtn.addEventListener('click', function () {
+                    // Remove o item da data específica
+                    savedItems[data].splice(index, 1);
+                    if (savedItems[data].length === 0) {
+                        delete savedItems[data]; // Se não houver mais itens na data, apaga o grupo
+                    }
+                    localStorage.setItem('savedItems', JSON.stringify(savedItems));
+                    atualizarItensSalvos();  // Atualiza a lista
+                });
+
+                li.appendChild(span);
+                li.appendChild(removerBtn);
+                itensSalvos.appendChild(li);
             });
-
-            li.appendChild(span);
-            li.appendChild(removerBtn);
-            itensSalvos.appendChild(li);
         });
     }
 
@@ -83,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('itens', JSON.stringify(itens)); // Armazena os itens no localStorage
         atualizarLista();
         pesoInput.value = '';
-        quantidadeInput.value = '1';
+        // quantidadeInput.value = '1'; // Comentado para manter a quantidade anterior
         pesoInput.focus();
     });
 
@@ -98,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalQuantidade = 0;
 
         for (let i = 0; i < itens.length; i++) {
-            totalPeso += itens[i].peso * itens[i].quantidade;
+            totalPeso += itens[i].peso;
             totalQuantidade += itens[i].quantidade;
         }
 
@@ -106,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         resultadoDiv.innerHTML = `
             <strong>Total Peso:</strong> ${totalPeso.toFixed(2)} kg<br>
-            <strong>Total Itens:</strong> ${totalQuantidade}<br>
+            <strong>Total Quantidade:</strong> ${totalQuantidade}<br>
             <hr>
             <strong>Média:</strong> ${media.toFixed(2)} kg
         `;
@@ -123,14 +150,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Salvar itens
     salvarBtn.addEventListener('click', function () {
-        const totalPeso = itens.reduce((acc, item) => acc + item.peso * item.quantidade, 0);
-        const totalItens = itens.reduce((acc, item) => acc + item.quantidade, 0);
-        const media = totalPeso / totalItens;
+        const aviario = document.getElementById('aviario').value.trim();
+        if (!aviario) {
+            alert('Por favor, insira o número do aviário!');
+            return;
+        }
 
-        savedItems.push({ totalPeso, totalItens, media });
-        localStorage.setItem('savedItems', JSON.stringify(savedItems)); // Armazena os itens salvos no localStorage
+        const totalPeso = itens.reduce((acc, item) => acc + item.peso, 0);
+        const totalQuantidade = itens.reduce((acc, item) => acc + item.quantidade, 0);
+        const media = totalPeso / totalQuantidade;
+
+        const dataAtual = new Date().toISOString().split('T')[0]; // Ex: 2025-05-10
+
+        // Se não houver um grupo para a data, cria-se um novo
+        if (!savedItems[dataAtual]) {
+            savedItems[dataAtual] = [];
+        }
+
+        savedItems[dataAtual].push({
+            aviario,
+            totalPeso,
+            totalQuantidade,
+            media
+        });
+
+        localStorage.setItem('savedItems', JSON.stringify(savedItems));
+
+        // Atualiza a lista de itens salvos
         atualizarItensSalvos();
-        limparBtn.click(); // Limpa a lista de itens após salvar
+
+        // Limpar os itens após salvar
+        limparBtn.click();
     });
 
     // Alternar abas
