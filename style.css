@@ -1,0 +1,155 @@
+:root {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --accent: #00c853;
+  --primary: #1e88e5;
+  --secondary: #424242;
+  --danger: #ef5350;
+  --font-family: 'Arial', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background-color: var(--secondary);
+}
+
+.tab-btn img {
+  width: 28px;
+  height: 28px;
+  filter: invert(1);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.input-group input {
+  padding: 0.6rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+  color: var(--text-color);
+}
+
+.lista-container, .resultado {
+  margin-top: 1rem;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1e1e1e;
+  padding: 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.btn-success {
+  background-color: #00bfa5;
+  color: white;
+}
+
+.remover-item {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+  padding: 0.2rem 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 4px;
+}
+
+.tab-btn {
+  background-color: #333;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tab-btn:hover {
+  background-color: #555;
+}
+
+.tab-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: rgb(255, 255, 255); /* Altere para a cor desejada */
+}
